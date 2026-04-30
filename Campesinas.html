@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campesinas | Tradición, Fibra y Sabor</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            /* Paleta Premium Campesinas */
+            --c-cacao: #2A1A10;      
+            --c-brand-dark: #632800; 
+            --c-oro: #C58C46;        
+            --c-crema: #FBF9F6;      
+            --c-blanco: #FFFFFF;
+
+            /* COLORES MANGO (Para el Footer) */
+            --mango: #fdea14;
+            --dark: #1C1C1C;
+            --white: #FFFFFF;
+            
+            /* Sombras sutiles */
+            --shadow-soft: 0 10px 20px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --shadow-float: 0 30px 60px rgba(0, 0, 0, 0.12);
+            
+            --max-w-tv: 1800px; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        img { max-width: 100%; height: auto; display: block; }
+        
+        body, html {
+            background-color: var(--c-crema);
+            color: var(--c-cacao);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        ::selection { background: var(--c-oro); color: var(--c-blanco); }
+
+        .tv-wrapper {
+            max-width: var(--max-w-tv); margin: 0 auto; position: relative;
+            background: var(--c-crema); box-shadow: 0 0 50px rgba(0,0,0,0.05); 
+        }
+
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999; opacity: 0.035;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');
+        }
+
+        h1, h2, h3, h4, .serif { font-family: 'Cormorant Garamond', serif; }
+
+        /* =========================================
+           NAVBAR ESTRUCTURA MAESTRA (Estilo Campesinas)
+           ========================================= */
+        .navbar {
+            position: fixed;
+            top: 25px; 
+            left: 50%;
+            transform: translateX(-50%); 
+            width: 95%;
+            max-width: 1400px;
+            padding: 10px 30px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10000;
+            background: rgba(251, 249, 246, 0.75);
+            backdrop-filter: blur(25px) saturate(1.2);
+            border-radius: 50px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            transition: all 0.4s ease;
+            border: 1px solid rgba(197, 140, 70, 0.15);
+        }
+
+        .navbar.scrolled {
+            top: 15px;
+            padding: 8px 30px;
+            background: rgba(251, 249, 246, 0.95);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08); 
+        }
+        
+        .navbar.hidden { transform: translate(-50%, -150%); }
+
+        /* 1. IZQUIERDA: Logo Mango BC */
+        .logo { text-decoration: none; display: flex; align-items: center; z-index: 1002; transition: transform 0.3s; }
+        .logo:hover { transform: scale(1.05) translateY(-2px); }
+        .nav-logo-wrapper {
+            display: flex; align-items: center; justify-content: center;
+            padding: 2px 0;
+        }
+        
+        .nav-logo { height: 32px !important; width: auto !important; display: block; object-fit: contain; }
+
+        /* 2. CENTRO: Logo Marca (Campesinas) */
+        .brand-center-logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .brand-center-logo:hover {
+            transform: translateX(-50%) scale(1.08) translateY(-2px);
+            filter: drop-shadow(0 5px 15px rgba(197,140,70,0.2));
+        }
+        .brand-logo-img {
+            height: 40px; 
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* 3. DERECHA: Enlaces y CTA */
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px; 
+            align-items: center;
+            margin: 0;
+            z-index: 1001;
+        }
+        .nav-links li a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--c-cacao);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .nav-links li a:hover { color: var(--c-oro); transform: translateY(-2px); display: inline-block;}
+
+        .nav-cta {
+            background: var(--c-cacao) !important; 
+            color: var(--c-blanco) !important;
+            font-family: 'Montserrat', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+            padding: 12px 28px !important;
+            border-radius: 50px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+            border: 1px solid var(--c-cacao);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-cta::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 0%; height: 100%;
+            background: var(--c-oro); transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); z-index: -1;
+        }
+        .nav-cta:hover::before { width: 100%; }
+        
+        .nav-cta:hover {
+            color: var(--c-blanco) !important;
+            border-color: var(--c-oro);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* HAMBURGUESA */
+        .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1002; padding: 10px;}
+        .hamburger span { width: 30px; height: 3px; background-color: var(--c-cacao); border-radius: 3px; transition: transform 0.4s, opacity 0.4s; }
+
+        @media (max-width: 992px) {
+            .navbar { width: 100%; top: 0; border-radius: 0; padding: 15px 5%; border: none; border-bottom: 1px solid rgba(197, 140, 70, 0.2); }
+            .navbar.scrolled { top: 0; }
+            .hamburger { display: flex; }
+            .brand-logo-img { height: 35px; }
+            .nav-logo { height: 26px !important; } 
+            
+            .nav-links { position: fixed; top: 0; left: 100%; width: 100%; height: 100vh; background: var(--c-crema); flex-direction: column; justify-content: center; align-items: center; gap: 40px; transition: left 0.4s ease; z-index: 1001; }
+            .nav-links.active { left: 0; }
+            .nav-links li a { font-size: 1.5rem; }
+            .nav-cta { font-size: 1rem !important; padding: 15px 30px !important; }
+            
+            .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+        }
+
+        /* =========================================
+           RESTO DEL CSS ORIGINAL CAMPESINAS
+           ========================================= */
+
+        /* HERO CINEMÁTICO */
+        .hero {
+            min-height: 100vh; display: grid; grid-template-columns: 1.15fr 0.85fr; 
+            align-items: center; gap: 4vw; padding: 140px 6% 60px; position: relative;
+        }
+        .hero-content { z-index: 10; position: relative; max-width: 680px; }
+        .eyebrow {
+            font-size: clamp(0.75rem, 1vw, 0.9rem); font-weight: 600; color: var(--c-oro);
+            text-transform: uppercase; letter-spacing: 4px; display: block; margin-bottom: 25px;
+            position: relative; padding-left: 55px;
+        }
+        .eyebrow::before { content: ''; position: absolute; left: 0; top: 50%; width: 40px; height: 1px; background: var(--c-oro); }
+        .hero h1 {
+            font-size: clamp(3.8rem, 7.5vw, 7rem); line-height: 0.92; font-weight: 500;
+            margin-bottom: 30px; letter-spacing: -2px; color: var(--c-cacao);
+        }
+        .hero h1 span { font-style: italic; color: var(--c-oro); font-weight: 400; }
+        .hero p {
+            font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.8; color: #5a4639;
+            margin-bottom: 45px; font-weight: 300; opacity: 0.9;
+        }
+        
+        .hero-image-wrapper { position: relative; width: 100%; height: 78vh; z-index: 20; }
+        .hero-img-container {
+            width: 100%; height: 100%; overflow: hidden; border-radius: 24px;
+            box-shadow: var(--shadow-hover); position: relative;
+        }
+        .img-main {
+            width: 100%; height: 130%; object-fit: cover; 
+            transform: translateY(-15%); will-change: transform; filter: saturate(1.1) brightness(0.95);
+        }
+        
+        .badge-artesanal {
+            position: absolute; bottom: 40px; left: -70px; z-index: 30;
+            background: var(--c-oro); color: var(--c-blanco); width: 180px; height: 180px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            text-align: center; font-family: 'Cormorant Garamond'; font-size: 1.5rem; line-height: 1.05;
+            font-style: italic; font-weight: 600; box-shadow: 0 25px 50px rgba(197, 140, 70, 0.4); 
+            animation: spinSlow 30s linear infinite; border: 12px solid var(--c-crema); 
+        }
+        @keyframes spinSlow { 100% { transform: rotate(360deg); } }
+
+        /* MARQUESINA */
+        .marquee-elegant {
+            background: var(--c-cacao); padding: 30px 0; overflow: hidden; position: relative;
+            display: flex; align-items: center; border-top: 1px solid rgba(197,140,70,0.3); border-bottom: 1px solid rgba(197,140,70,0.3);
+        }
+        .marquee-content { display: flex; white-space: nowrap; animation: scrollMarquee 35s linear infinite; }
+        .marquee-text {
+            font-family: 'Cormorant Garamond'; font-size: 3rem; font-style: italic; font-weight: 400;
+            color: transparent; -webkit-text-stroke: 1px rgba(253, 251, 248, 0.4); padding: 0 40px;
+            text-transform: uppercase; letter-spacing: 2px; transition: all 0.4s ease; cursor: default;
+        }
+        .marquee-elegant:hover .marquee-text { -webkit-text-stroke: 1px var(--c-oro); color: var(--c-oro); text-shadow: 0 0 20px rgba(197,140,70,0.2); }
+        @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- SECCIÓN SCROLLYTELLING PREMIUM --- */
+        .scrollytelling-section {
+            height: 100vh;
+            width: 100%;
+            background: radial-gradient(circle, var(--c-blanco) 0%, #fdfaf4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(0,0,0,0.03);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .scroll-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Textos Elegantes del Scroll */
+        .scroll-text-block {
+            position: absolute;
+            width: 350px;
+            opacity: 0;
+            z-index: 20;
+            top: 45%;
+            transform: translateY(-50%);
+        }
+        
+        .scroll-text-left { left: 8%; text-align: right; }
+        .scroll-text-right { right: 8%; text-align: left; }
+        
+        .scroll-text-block h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            color: var(--c-oro);
+            margin-bottom: 15px;
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .scroll-text-block p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--c-cacao);
+            font-weight: 300;
+        }
+
+        /* Imágenes del Scroll */
+        .scroll-image {
+            position: absolute;
+            will-change: transform, opacity;
+            z-index: 5;
+        }
+
+        .cookie-scroll {
+            width: 320px;
+            z-index: 10;
+            filter: drop-shadow(0 20px 30px rgba(42, 26, 16, 0.15));
+        }
+
+        .ing-scroll {
+            width: 100px;
+        }
+
+        /* --- BENTO GRID ARREGLADO Y MÁS COMPACTO --- */
+        .section-padding { padding: 100px 6%; } 
+        .section-header { text-align: center; margin-bottom: 60px; max-width: 800px; margin-inline: auto; } 
+        .section-header h2 { font-size: clamp(2.8rem, 4vw, 4.5rem); font-weight: 500; line-height: 1.05; margin-top: 15px; }
+
+        /* Cuadrícula menos ancha y con menos separación */
+        .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; max-width: 1000px; margin: 0 auto; }
+        
+        .bento-card {
+            background: var(--c-blanco); 
+            padding: 45px 40px; 
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft); transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center;
+        }
+        .bento-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
+            background: var(--c-oro); transform: scaleX(0); transform-origin: right; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .bento-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); border-color: rgba(197, 140, 70, 0.15); }
+        .bento-card:hover::after { transform: scaleX(1); transform-origin: left; }
+        
+        /* Ajustamos la tipografía para el nuevo tamaño de tarjeta */
+        .bento-card h3 { font-size: 2rem; margin-bottom: 15px; color: var(--c-brand-dark); font-weight: 500; } 
+        .bento-card p { font-size: 1rem; line-height: 1.6; color: #5a4639; font-weight: 300; position: relative; z-index: 2;}
+        
+        /* Tarjetas anchas toman las dos columnas */
+        .card-large { grid-column: span 2; background: var(--c-cacao); color: var(--c-crema); }
+        .card-large h3 { color: var(--c-oro); font-size: 3.2rem; }
+        .card-large p { color: rgba(255,255,255,0.75); font-size: 1.15rem; max-width: 90%; }
+
+        /* PRODUCTOS */
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 70px 40px;
+            max-width: 1400px; margin: 0 auto;
+        }
+        .product-card { text-align: center; position: relative; perspective: 1000px; }
+        .img-wrapper {
+            background: var(--c-blanco); border-radius: 20px; padding: 40px; margin-bottom: 35px;
+            position: relative; transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden; border: 1px solid rgba(0,0,0,0.02);
+            height: 380px; display: flex; align-items: center; justify-content: center;
+        }
+        .img-wrapper::before {
+            content: ''; position: absolute; inset: 0; background: #fdfaf4; transform: scale(0.9); opacity: 0;
+            transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1); border-radius: 20px; z-index: 1;
+        }
+        .product-card:hover .img-wrapper { 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px); border-color: rgba(197, 140, 70, 0.2); 
+        }
+        .product-card:hover .img-wrapper::before { transform: scale(1); opacity: 1; }
+        
+        .product-card img {
+            width: 100%; max-width: 220px; max-height: 240px; object-fit: contain; margin: 0 auto; 
+            transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.08)); 
+            position: relative; z-index: 2;
+        }
+        .product-card:hover img { transform: translateY(-25px) scale(1.08); filter: drop-shadow(0 20px 25px rgba(0,0,0,0.15)); }
+        
+        .hover-cta {
+            position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+            background: var(--c-oro); color: var(--c-blanco); padding: 14px 28px; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            opacity: 0; transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); z-index: 3;
+            white-space: nowrap; font-family: 'Montserrat'; text-decoration: none; box-shadow: 0 10px 20px rgba(197,140,70,0.3);
+        }
+        .product-card:hover .hover-cta { opacity: 1; bottom: 35px; }
+
+        .product-card h4 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 500; color: var(--c-cacao); }
+        .product-card p { font-size: 1rem; color: #5a4639; margin-bottom: 25px; line-height: 1.6; font-weight: 300; min-height: 75px; }
+        
+        .tags { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .tag { font-size: 0.7rem; font-weight: 600; padding: 6px 18px; border: 1px solid rgba(197, 140, 70, 0.3); border-radius: 50px; color: var(--c-oro); text-transform: uppercase; letter-spacing: 1.5px; background: rgba(197,140,70,0.03); }
+
+        /* DISTRIBUIDORES Y FORMULARIO */
+        .cta-section { background: var(--c-cacao); color: var(--c-crema); position: relative; overflow: hidden; padding: 120px 6%; }
+        .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; max-width: 1300px; margin: 0 auto; }
+        .cta-text h2 { font-size: clamp(3.2rem, 5vw, 4.8rem); line-height: 1.05; margin-bottom: 30px; color: var(--c-blanco); }
+        .cta-text span { color: var(--c-oro); font-style: italic; font-weight: 400; }
+        .cta-text p { font-size: 1.15rem; line-height: 1.8; opacity: 0.8; margin-bottom: 40px; font-weight: 300; }
+        
+        .check-list { list-style: none; }
+        .check-list li { margin-bottom: 20px; display: flex; align-items: flex-start; font-size: 1.05rem; font-weight: 300; opacity: 0.9; }
+        .check-list li::before { content: '✦'; color: var(--c-oro); margin-right: 15px; font-size: 1.2rem; text-shadow: 0 0 10px rgba(197,140,70,0.5); }
+
+        .form-container { background: var(--c-blanco); padding: 70px 60px; border-radius: 24px; position: relative; box-shadow: var(--shadow-float); }
+        .form-container h3 { color: var(--c-cacao); font-size: 2.5rem; margin-bottom: 40px; text-align: center; }
+        
+        .input-group { position: relative; margin-bottom: 35px; }
+        .input-group input {
+            width: 100%; padding: 12px 0; background: transparent; border: none; border-bottom: 2px solid #E5E0D8;
+            font-family: 'Montserrat'; font-size: 1.05rem; color: var(--c-cacao); outline: none; transition: border-color 0.3s;
+        }
+        .input-group label {
+            position: absolute; top: 12px; left: 0; color: #A0968C; font-size: 0.85rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 1.5px; pointer-events: none; transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .input-group input:focus ~ label, .input-group input:valid ~ label {
+            top: -15px; font-size: 0.65rem; color: var(--c-oro); font-weight: 600;
+        }
+        .input-group input:focus { border-bottom-color: var(--c-oro); }
+        
+        #form-message { 
+            text-align: center; margin-top: 20px; font-weight: 600; color: var(--c-oro); 
+            opacity: 0; transition: opacity 0.4s; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .btn-submit {
+            display: block; width: 100%; background: var(--c-cacao); color: var(--c-blanco);
+            padding: 16px 32px; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; font-weight: 600;
+            letter-spacing: 2px; text-transform: uppercase; border: 1px solid var(--c-cacao);
+            border-radius: 4px; cursor: pointer; margin-top: 40px; position: relative; overflow: hidden;
+            z-index: 1; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .btn-submit::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 0%; height: 100%;
+            background: var(--c-oro); transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); z-index: -1;
+        }
+        .btn-submit:hover::before { width: 100%; }
+        .btn-submit:hover { color: var(--c-blanco); border-color: var(--c-oro); transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+        /* =========================================
+           FOOTER CORPORATIVO (PLANTILLA MAESTRA)
+           ========================================= */
+        footer { background: var(--dark); padding: 80px 5% 40px; color: var(--white); font-family: 'Open Sans', sans-serif; position: relative;}
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px; max-width: 1400px; margin: 0 auto; }
+        .footer-col h4 { font-family: 'Montserrat', sans-serif; color: var(--mango); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; font-weight: 700;}
+        .footer-col a { color: #AAA; text-decoration: none; display: block; margin-bottom: 15px; font-size: 0.9rem; transition: color 0.3s; font-family: 'Open Sans', sans-serif;}
+        .footer-col a:hover, .footer-col a:focus { color: var(--white); transform: translateX(5px); outline: none; }
+        .footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 60px; padding-top: 30px; color: #666; font-size: 0.8rem; font-family: 'Open Sans', sans-serif;}
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; padding-top: 180px; text-align: center; gap: 60px; }
+            .hero-content { margin: 0 auto; }
+            .eyebrow { padding-left: 0; }
+            .eyebrow::before { display: none; }
+            .hero-image-wrapper { height: 60vh; max-width: 800px; margin: 0 auto; }
+            .badge-artesanal { bottom: -20px; left: auto; right: 20px; width: 150px; height: 150px; border-width: 8px; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .card-large { grid-column: span 1; }
+            .cta-section { padding: 100px 6%; }
+            .cta-grid { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+            .check-list li { justify-content: center; text-align: left; }
+            .scroll-text-block { position: relative; width: 100%; text-align: center; left: auto; right: auto; margin-bottom: 30px; opacity: 1 !important;}
+            .scroll-container { flex-direction: column; height: auto; padding: 100px 0;}
+            .cookie-scroll { position: relative; width: 250px; margin-top: 50px;}
+            .ing-scroll { display: none; }
+            .scrollytelling-section { height: auto; }
+        }
+        @media (max-width: 768px) {
+            .section-padding { padding: 90px 6%; }
+            .bento-card { padding: 50px 35px; }
+            .form-container { padding: 50px 30px; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 50px; }
+            .marquee-text { font-size: 2rem; }
+        }
+        @media (max-width: 480px) {
+            .hero { padding-top: 140px; }
+            .hero-image-wrapper { height: 45vh; }
+            .badge-artesanal { width: 120px; height: 120px; font-size: 1.1rem; border-width: 6px; bottom: -15px; right: 10px;}
+            .product-card h4 { font-size: 1.8rem; }
+            .cta-text h2 { font-size: 2.8rem; }
+            .form-container h3 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="tv-wrapper">
+
+    <div class="noise-overlay"></div>
+
+    <nav id="navbar" class="navbar">
+        <a href="index.html" class="logo" aria-label="Ir al inicio de Mango BC">
+            <div class="nav-logo-wrapper">
+                <img src="mbc.png" alt="Mango BC Logo" class="nav-logo" loading="eager" decoding="async">
+            </div>
+        </a>
+        
+        <a href="#" class="brand-center-logo" aria-label="Inicio Campesinas">
+            <img src="LOGO-CAMPESINAS-02.png" alt="Campesinas" class="brand-logo-img">
+        </a>
+        
+        <div class="hamburger" id="hamburger" role="button" aria-label="Menú de navegación" tabindex="0">
+            <span></span><span></span><span></span>
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#scroll-trigger-section" class="nav-item">Receta</a></li>
+            <li><a href="#catalogo" class="nav-item">Catálogo</a></li>
+            <li><a href="#distribuidores" class="nav-item">Distribuidores</a></li>
+            <li><a href="#distribuidores" class="nav-cta nav-item">COTIZAR</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <span class="eyebrow fade-stagger">Calidad y Tradición</span>
+                <h1 class="fade-stagger">Galletas con <span>sabor a hogar.</span></h1>
+                <p class="fade-stagger">Nuestra línea premium Campesinas te ofrece repostería mexicana de alta rotación con la autenticidad que enamora al mercado tradicional y retail.</p>
+                <div class="fade-stagger" style="margin-top: 25px;">
+                    <a href="#catalogo" class="nav-cta" style="display: inline-block; padding: 16px 36px !important; font-size: 0.9rem !important;">Descubrir Catálogo</a>
+                </div>
+            </div>
+            
+            <div class="hero-image-wrapper fade-up">
+                <div class="hero-img-container">
+                    <img src="familiacampesinas.jpg" alt="Familia compartiendo Campesinas" class="img-main" id="hero-img">
+                </div>
+                <div class="badge-artesanal">Receta<br>Premium</div>
+            </div>
+        </section>
+
+        <div class="marquee-elegant">
+            <div class="marquee-content">
+                <span class="marquee-text">✦ CALIDAD PREMIUM ✦ INGREDIENTES NATURALES ✦ SABOR TRADICIONAL</span>
+                <span class="marquee-text">✦ CALIDAD PREMIUM ✦ INGREDIENTES NATURALES ✦ SABOR TRADICIONAL</span>
+                <span class="marquee-text">✦ CALIDAD PREMIUM ✦ INGREDIENTES NATURALES ✦ SABOR TRADICIONAL</span>
+                <span class="marquee-text">✦ CALIDAD PREMIUM ✦ INGREDIENTES NATURALES ✦ SABOR TRADICIONAL</span>
+            </div>
+        </div>
+
+        <section class="scrollytelling-section" id="scroll-trigger-section">
+            <div class="scroll-container">
+                
+                <div class="scroll-text-block scroll-text-left" id="text-nuez">
+                    <h3>Toque Artesanal</h3>
+                    <p>Ingredientes seleccionados meticulosamente para garantizar un producto de gran demanda que respeta la receta clásica de nuestras abuelas.</p>
+                </div>
+
+                <div class="scroll-text-block scroll-text-right" id="text-azucar">
+                    <h3>Calidad Comercial</h3>
+                    <p>Elaboradas bajo los estándares más estrictos para asegurar larga vida de anaquel y alta rotación en piso de venta.</p>
+                </div>
+
+                <img src="besonuezsinfondo.png" class="scroll-image cookie-scroll" id="galleta-scroll" alt="Beso de Nuez">
+
+                <img src="nuez.png" class="scroll-image ing-scroll" id="nuez-scroll" alt="Nuez">
+                <img src="azucar.png" class="scroll-image ing-scroll" id="azucar-scroll" alt="Azúcar">
+
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="section-header fade-up">
+                <span class="eyebrow" style="justify-content: center; padding:0;">Nuestra Esencia</span>
+                <h2>¿Por qué Campesinas<br>es un éxito en ventas?</h2>
+            </div>
+            <div class="bento-grid">
+                <div class="bento-card fade-up">
+                    <h3>Fidelidad de Consumo</h3>
+                    <p>Las recetas clásicas y la calidad superior generan recompra constante. Campesinas es el antojo diario que no puede faltar en casa.</p>
+                </div>
+                <div class="bento-card fade-up" style="transition-delay: 0.1s;">
+                    <h3>Elaboración Premium</h3>
+                    <p>Elaboramos repostería cuidando la selección de nuestros ingredientes, aportando un sabor inigualable y auténtico.</p>
+                </div>
+                
+                <div class="bento-card card-large fade-up" style="transition-delay: 0.2s;">
+                    <h3>Soporte B2B Total</h3>
+                    <p>Entregamos en tiempo y forma en cualquier punto. Respaldados por la capacidad industrial de Mango Business Center para abastecer grandes volúmenes con exhibidores listos para venta.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding catalogo" id="catalogo">
+            <div class="section-header fade-up">
+                <span class="eyebrow" style="padding:0;">Nuestro Portafolio B2B</span>
+                <h2>El catálogo del buen gusto</h2>
+            </div>
+            <div class="products-grid">
+                
+                <div class="product-card fade-up">
+                    <div class="img-wrapper">
+                        <img src="Beso de Nuez - Clamshell.png" alt="Besos de Nuez (Nanná)">
+                        <a href="#distribuidores" class="hover-cta">Cotizar Pedido</a>
+                    </div>
+                    <h4>Besos de Nuez</h4>
+                    <p>Galleta sabor nuez, finamente espolvoreada con azúcar glass. Textura perfecta que se deshace en la boca.</p>
+                    <div class="tags">
+                        <span class="tag">Paquete de 9 pzas</span>
+                        <span class="tag">100g</span>
+                    </div>
+                    <div class="tags" style="margin-top: 8px;">
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Display: Caja c/ 12 pqt</span>
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Máster: 144 pqt</span>
+                    </div>
+                </div>
+
+                <div class="product-card fade-up" style="transition-delay: 0.1s;">
+                    <div class="img-wrapper">
+                        <img src="EnjChoco-Frente.png" alt="Besos de Chocolate (Nanná)">
+                        <a href="#distribuidores" class="hover-cta">Cotizar Pedido</a>
+                    </div>
+                    <h4>Besos de Chocolate</h4>
+                    <p>Galleta de profundo sabor a chocolate. El acompañante ideal para la taza de café diaria.</p>
+                    <div class="tags">
+                        <span class="tag">Paquete de 9 pzas</span>
+                        <span class="tag">100g</span>
+                    </div>
+                    <div class="tags" style="margin-top: 8px;">
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Display: Caja c/ 12 pqt</span>
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Máster: 144 pqt</span>
+                    </div>
+                </div>
+
+                <div class="product-card fade-up" style="transition-delay: 0.2s;">
+                    <div class="img-wrapper">
+                        <img src="Surtipack-Frente.png" alt="Besos de Coco (Nanná)">
+                        <a href="#distribuidores" class="hover-cta">Cotizar Pedido</a>
+                    </div>
+                    <h4>Besos de Coco</h4>
+                    <p>Delicada galleta sabor coco, elaborada con los más altos estándares y calidad artesanal.</p>
+                    <div class="tags">
+                        <span class="tag">Paquete de 9 pzas</span>
+                        <span class="tag">100g</span>
+                    </div>
+                    <div class="tags" style="margin-top: 8px;">
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Display: Caja c/ 12 pqt</span>
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Máster: 144 pqt</span>
+                    </div>
+                </div>
+
+                <div class="product-card fade-up">
+                    <div class="img-wrapper">
+                        <img src="EnjVainilla-Frente.png" alt="Waffle de Vainilla">
+                        <a href="#distribuidores" class="hover-cta">Cotizar Pedido</a>
+                    </div>
+                    <h4>Waffle Vainilla</h4>
+                    <p>Galleta tipo waffle de rico sabor a mantequilla y vainilla. Perfectos para desayunos rápidos.</p>
+                    <div class="tags">
+                        <span class="tag">Paquete de 2 pzas</span>
+                        <span class="tag">80g</span>
+                    </div>
+                    <div class="tags" style="margin-top: 8px;">
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Display: Caja c/ 6 pqt</span>
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Máster: 100 pqt</span>
+                    </div>
+                </div>
+                
+                <div class="product-card fade-up" style="transition-delay: 0.1s;">
+                    <div class="img-wrapper">
+                        <img src="Laminitas-Frente.png" alt="Pays">
+                        <a href="#distribuidores" class="hover-cta">Cotizar Pedido</a>
+                    </div>
+                    <h4>Pays Caseros</h4>
+                    <p>Galletas tipo pay elaboradas con auténtico relleno de queso y una suculenta mermelada.</p>
+                    <div class="tags">
+                        <span class="tag">Piña-Coco / Frutos Rojos</span>
+                        <span class="tag">100g (1 pza)</span>
+                    </div>
+                    <div class="tags" style="margin-top: 8px;">
+                        <span class="tag" style="background: rgba(42, 26, 16, 0.1); border:none; color: var(--c-cacao);">Caja Máster: 120 pzas</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="cta-section" id="distribuidores">
+            <div class="cta-grid">
+                <div class="cta-text fade-up">
+                    <span class="eyebrow" style="color: rgba(255,255,255,0.4); padding:0;">Alianzas Comerciales B2B</span>
+                    <h2>Aumenta el ticket de tu negocio<br><span>con repostería premium.</span></h2>
+                    <p>Únete a la red de distribuidores Mango BC. Te ofrecemos productos honestos, con imagen altamente atractiva en anaquel, avalados por un sabor excepcional.</p>
+                    <ul class="check-list">
+                        <li>Alta rotación y rentabilidad para canales retail y detalle.</li>
+                        <li>Entregas garantizadas (Cajas Máster y Displays).</li>
+                        <li>Soporte de Grupo Mango Business Center.</li>
+                        <li>Calidad de exportación a LATAM y USA.</li>
+                    </ul>
+                </div>
+                <div class="form-container fade-up" style="transition-delay: 0.2s;">
+                    <h3>Inicia tu distribución</h3>
+                    <form id="distribuidores-form">
+                        <div class="input-group">
+                            <input type="text" name="nombre" id="nombre" required>
+                            <label for="nombre">Nombre Comercial / Empresa</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="tel" name="telefono" id="telefono" required>
+                            <label for="telefono">Teléfono de Contacto</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" name="correo" id="correo" required>
+                            <label for="correo">Correo Electrónico</label>
+                        </div>
+                        <button type="submit" class="btn-submit" id="btn-submit">Solicitar Cotización Oficial</button>
+                    </form>
+                    <div id="form-message">¡Petición enviada con éxito! Te contactaremos pronto.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid fade-in">
+            <div class="footer-col">
+                <div class="footer-logo" style="margin-bottom: 20px;">
+                    <img src="mbc.png" alt="Mango BC" style="height: 50px; width: auto; filter: brightness(0) invert(1);">
+                </div>
+                <p style="color: #888; font-size: 0.9rem; line-height: 1.6; font-family: 'Open Sans', sans-serif;">Morelia, Michoacán<br>México, CP 58000<br>+52 443 332 7430</p>
+            </div>
+            <div class="footer-col">
+                <h4 style="color: var(--mango); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; font-weight: 700;">Contacto Directo</h4>
+                <a href="mailto:socios@mangobusiness.com" style="color: #AAA; text-decoration: none; display: block; margin-bottom: 15px; font-size: 0.9rem; transition: color 0.3s; font-family: 'Open Sans', sans-serif;">Ventas y Socios</a>
+                <a href="mailto:talento@mangobusiness.com" style="color: #AAA; text-decoration: none; display: block; margin-bottom: 15px; font-size: 0.9rem; transition: color 0.3s; font-family: 'Open Sans', sans-serif;">Atracción de Talento</a>
+                <a href="mailto:compras@mangobusiness.com" style="color: #AAA; text-decoration: none; display: block; margin-bottom: 15px; font-size: 0.9rem; transition: color 0.3s; font-family: 'Open Sans', sans-serif;">Proveedores y Compras</a>
+            </div>
+            <div class="footer-col">
+                <h4 style="color: var(--mango); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; font-weight: 700;">Redes Sociales</h4>
+                <a href="https://www.linkedin.com/company/mango-business-center" target="_blank" style="color: #AAA; text-decoration: none; display: block; margin-bottom: 15px; font-size: 0.9rem; transition: color 0.3s; font-family: 'Open Sans', sans-serif;">LinkedIn</a>
+                <a href="https://www.instagram.com/mangobusinesscenter" target="_blank" style="color: #AAA; text-decoration: none; display: block; margin-bottom: 15px; font-size: 0.9rem; transition: color 0.3s; font-family: 'Open Sans', sans-serif;">Instagram</a>
+                <a href="https://www.facebook.com/mangobusinesscenter" target="_blank" style="color: #AAA; text-decoration: none; display: block; margin-bottom: 15px; font-size: 0.9rem; transition: color 0.3s; font-family: 'Open Sans', sans-serif;">Facebook</a>
+            </div>
+        </div>
+        <div class="footer-bottom" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 60px; padding-top: 30px; color: #666; font-size: 0.8rem; font-family: 'Open Sans', sans-serif;">
+            © 2026 MANGO BUSINESS CENTER
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    // Lógica Navbar Scrolled y Menú Hamburguesa
+    const navbar = document.getElementById('navbar');
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    const navItems = document.querySelectorAll('.nav-item');
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > 50) { 
+            navbar.classList.add('scrolled'); 
+        } else { 
+            navbar.classList.remove('scrolled'); 
+        }
+        
+        if (scrollTop > lastScrollTop && scrollTop > 300) { 
+            navbar.classList.add('hidden'); 
+        } else { 
+            navbar.classList.remove('hidden'); 
+        }
+        lastScrollTop = scrollTop;
+    });
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+    });
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+
+    // Registramos ScrollTrigger de GSAP
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. Animaciones Fade Up Nativas
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-up, .fade-stagger').forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(40px)';
+        el.style.transition = `opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) ${el.classList.contains('fade-stagger') ? index * 0.15 : 0}s`;
+        observer.observe(el);
+    });
+
+    // 2. Parallax Hero
+    window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const heroImg = document.getElementById('hero-img');
+        if(scrollTop < window.innerHeight && heroImg) {
+            heroImg.style.transform = `translateY(calc(-15% + ${scrollTop * 0.18}px))`;
+        }
+    });
+
+    // 3. LA MAGIA DE GSAP: Animación guiada por el Scroll (OPTIMIZADA)
+    let mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1025px)", () => {
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#scroll-trigger-section",
+                start: "top top", 
+                end: "+=1200", // Acortamos el scroll total para que todo se sienta más ágil
+                scrub: 1, 
+                pin: true, 
+            }
+        });
+
+        // Estado inicial más cerca del centro para evitar espacio blanco
+        gsap.set("#galleta-scroll", { y: -250, scale: 0.6, rotation: -45 });
+        gsap.set(".ing-scroll", { scale: 0, opacity: 0 });
+
+        // Paso 1: Cae la galleta (mucho más rápido en proporción a la línea de tiempo)
+        tl.to("#galleta-scroll", { y: 0, scale: 1, rotation: 0, duration: 0.8, ease: "power1.out" })
+          
+          // Paso 2: Pequeño brinco y explosión de ingredientes
+          .to("#galleta-scroll", { scale: 1.1, duration: 0.8 }, "+=0.1")
+          
+          // --- AJUSTE NUEZ ---
+          .to("#nuez-scroll", { x: -350, y: -180, scale: 1.5, rotation: -20, opacity: 1, duration: 1 }, "<")
+          // Aparece texto Nuez
+          .to("#text-nuez", { x: 50, opacity: 1, duration: 0.5 }, "<0.3")
+
+          // --- AJUSTE AZÚCAR ---
+          .to("#azucar-scroll", { x: 350, y: 180, scale: 1.5, rotation: 30, opacity: 1, duration: 1 }, "<")
+          // Aparece texto Azúcar
+          .to("#text-azucar", { x: -50, opacity: 1, duration: 0.5 }, "<0.3")
+          
+          // Pausa para leer
+          .to({}, {duration: 1.2})
+          
+          // Reversa acelerada
+          .to("#nuez-scroll", { x: 0, y: 0, scale: 0, opacity: 0, duration: 0.8 })
+          .to("#azucar-scroll", { x: 0, y: 0, scale: 0, opacity: 0, duration: 0.8 }, "<")
+          .to("#text-nuez", { x: 0, opacity: 0, duration: 0.4 }, "<")
+          .to("#text-azucar", { x: 0, opacity: 0, duration: 0.4 }, "<")
+          .to("#galleta-scroll", { scale: 0.8, filter: "blur(5px)", opacity: 0, duration: 0.8 }, "<0.2");
+    });
+
+    // 4. Formulario WhatsApp Redirection
+    document.getElementById('distribuidores-form').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        const btn = document.getElementById('btn-submit');
+        const msg = document.getElementById('form-message');
+        
+        btn.innerText = "Enviando...";
+        btn.style.opacity = "0.7";
+        
+        const nombre = document.getElementById('nombre').value;
+        const email = document.getElementById('correo').value;
+        const telefono = document.getElementById('telefono').value;
+
+        const asunto = encodeURIComponent("Nueva Solicitud de Contacto - Distribuidores B2B");
+        const cuerpo = encodeURIComponent(`Hola, tenemos un nuevo prospecto interesado en distribuir Repostería:\n\nNombre Comercial: ${nombre}\nCorreo: ${email}\nTeléfono: ${telefono}\n`);
+            
+        setTimeout(() => {
+            window.location.href = `mailto:ventas@mangobc.com?subject=${asunto}&body=${cuerpo}`;
+            this.reset();
+            btn.innerText = "Solicitar Cotización Oficial";
+            btn.style.opacity = "1";
+            msg.style.opacity = "1";
+            setTimeout(() => { msg.style.opacity = "0"; }, 5000);
+        }, 1500);
+    });
+</script>
+</body>
+</html>
