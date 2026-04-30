@@ -381,7 +381,7 @@
             align-items: center;
             padding: 70px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.5s ease;
+            transition: background 0.5s ease;
             position: relative;
             overflow: hidden;
         }
@@ -407,7 +407,15 @@
 
         .filo-row:hover {
             background: linear-gradient(90deg, rgba(253,234,20,0.03) 0%, transparent 100%);
-            padding-left: 30px; /* Desplaza el contenido ligeramente a la derecha */
+        }
+
+        .filo-title, .filo-content {
+            transition: transform 0.5s ease;
+        }
+
+        .filo-row:hover .filo-title,
+        .filo-row:hover .filo-content {
+            transform: translateX(30px);
         }
 
         .filo-title {
@@ -852,7 +860,7 @@
                 </div>
             </div>
             <div class="dropdown">
-                <a href="#" class="nav-item dropdown-toggle" aria-haspopup="true" aria-expanded="false">Franquicias ▾</a>
+                <a href="javascript:void(0);" class="nav-item dropdown-toggle" aria-haspopup="true" aria-expanded="false">Franquicias ▾</a>
                 <div class="dropdown-menu" role="menu">
                     <a href="Franquicias.html" role="menuitem">Hot Rolls</a>
                 </div>
@@ -1209,10 +1217,10 @@
                 </div>
                 <div class="filo-content">
                     <ul class="filo-vals">
-                        <li><div><strong>Alcance Internacional</strong>Expandimos operaciones a LATAM y USA.</div></li>
-                        <li><div><strong>Alianzas Estratégicas</strong>Afiliados a cámaras de comercio de varias ciudades.</div></li>
-                        <li><div><strong>Capacidad Industrial</strong>Producimos más de 1.5M de unidades al mes.</div></li>
-                        <li><div><strong>Innovación de Producto</strong>Portafolio que va desde panificación hasta marcas veganas.</div></li>
+                        <li><div><strong>Crecimiento con Dirección</strong> No creemos en crecer por crecer. Cada paso está respaldado por estrategia, datos y acompañamiento. Impulsamos a emprendedores y distribuidores a escalar con claridad, no a improvisar.</div></li>
+                        <li><div><strong>Ejecución que Genera Resultados</strong> Las ideas valen poco sin implementación. Nos enfocamos en accionar, medir y optimizar constantemente para asegurar resultados reales en ventas y expansión.</div></li>
+                        <li><div><strong>Relaciones que Construyen Negocio</strong> Más que clientes o aliados, construimos relaciones a largo plazo basadas en confianza, comunicación clara y beneficio mutuo. Crecemos cuando nuestra red crece.</div></li>
+                        <li><div><strong>Simplicidad Estratégica</strong> Hacemos lo complejo entendible y accionable. Desde la estructura comercial hasta la experiencia digital, todo está diseñado para facilitar decisiones y acelerar procesos.</div></li>
                     </ul>
                 </div>
             </div>
